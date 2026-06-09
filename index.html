@@ -216,11 +216,11 @@
 <body>
 
   <!-- ⚠️ CONFIGURACAO — Substitua pelos valores do seu projeto Supabase -->
-<script>
-  const SUPABASE_URL = "https://axermtntmjfecctxrocm.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_yon8yI-srledSxK5zzhH3g_6zppXINf";
-  const PER_PAGE = 50;
-</script>
+  <script>
+    const SUPABASE_URL      = "https://axermtntmjfecctxrocm.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4ZXJtdG50bWpmZWNjdHhyb2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMzcwMzMsImV4cCI6MjA5NjYxMzAzM30.oO2BCjJuZZj9hRANybWqe44QgCT63MggeTODK1PnWpA";
+    const PER_PAGE          = 50;
+  </script>
 
   <header>
     <div class="header-left">
@@ -362,7 +362,7 @@
     <span><a href="https://github.com/SN-2026" target="_blank">Ver no GitHub</a></span>
   </footer>
 
-  <script>   
+  <script>
     /* ── Relógio ────────────────────────────────── */
     function tick() {
       document.getElementById('clock').textContent =
@@ -424,44 +424,28 @@
         : `<span class="badge badge-domestico">✈ Doméstico</span>`;
     }
 
-async function loadAirports() {
-  try {
+    /* ── Selects cascata ────────────────────────── */
+    async function loadAirports() {
+      try {
+        const r = await fetch('data/airports.json');
+        airports = await r.json();
+        const states = [...new Set(airports.map(a => a.state))].sort();
+        const sel = document.getElementById('sel-state');
+        sel.innerHTML = '<option value="">Todos os estados</option>';
+        states.forEach(s => {
+          const o = document.createElement('option');
+          o.value = o.textContent = s;
+          sel.appendChild(o);
+        });
+        document.getElementById('meta-bar').textContent =
+          `${airports.length} aeroportos disponíveis · Dados históricos via Supabase`;
+      } catch(e) {
+        document.getElementById('meta-bar').textContent = 'Erro ao carregar aeroportos: ' + e.message;
+      }
 
-    airports = await sbFetch(
-      "aeroportos?select=icao,nome,cidade,estado&order=estado.asc,cidade.asc"
-    );
-
-    airports = airports.map(a => ({
-      icao: a.icao,
-      name: a.nome,
-      city: a.cidade,
-      state: a.estado
-    }));
-
-    const states = [...new Set(airports.map(a => a.state))].sort();
-
-    const sel = document.getElementById("sel-state");
-    sel.innerHTML = '<option value="">Todos os estados</option>';
-
-    states.forEach(s => {
-      const option = document.createElement("option");
-      option.value = s;
-      option.textContent = s;
-      sel.appendChild(option);
-    });
-
-    document.getElementById("meta-bar").textContent =
-      `${airports.length} aeroportos disponíveis`;
-
-  } catch (e) {
-    document.getElementById("meta-bar").textContent =
-      "Erro ao carregar aeroportos: " + e.message;
-  }
-
-  document.getElementById("sel-date").value = todayIso();
-}
-
-function onStateChange() {
+      // Define data padrão como hoje
+      document.getElementById('sel-date').value = todayIso();
+    }
 
     function onStateChange() {
       const state = document.getElementById('sel-state').value;
