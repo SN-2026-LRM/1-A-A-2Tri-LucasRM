@@ -424,8 +424,7 @@
         : `<span class="badge badge-domestico">✈ Doméstico</span>`;
     }
 
-    /* ── Selects cascata ────────────────────────── */
- async function loadAirports() {
+async function loadAirports() {
   try {
 
     airports = await sbFetch(
@@ -462,9 +461,7 @@
   document.getElementById("sel-date").value = todayIso();
 }
 
-      // Define data padrão como hoje
-      document.getElementById('sel-date').value = todayIso();
-    }
+function onStateChange() {
 
     function onStateChange() {
       const state = document.getElementById('sel-state').value;
