@@ -441,27 +441,25 @@
 
     const states = [...new Set(airports.map(a => a.state))].sort();
 
-    const sel = document.getElementById('sel-state');
-
+    const sel = document.getElementById("sel-state");
     sel.innerHTML = '<option value="">Todos os estados</option>';
 
     states.forEach(s => {
-      const o = document.createElement('option');
-      o.value = o.textContent = s;
-      sel.appendChild(o);
+      const option = document.createElement("option");
+      option.value = s;
+      option.textContent = s;
+      sel.appendChild(option);
     });
 
-    document.getElementById('meta-bar').textContent =
-      `${airports.length} aeroportos disponíveis · Dados carregados do Supabase`;
+    document.getElementById("meta-bar").textContent =
+      `${airports.length} aeroportos disponíveis`;
 
-  } catch(e) {
-
-    document.getElementById('meta-bar').textContent =
-      'Erro ao carregar aeroportos: ' + e.message;
-
+  } catch (e) {
+    document.getElementById("meta-bar").textContent =
+      "Erro ao carregar aeroportos: " + e.message;
   }
 
-  document.getElementById('sel-date').value = todayIso();
+  document.getElementById("sel-date").value = todayIso();
 }
 
       // Define data padrão como hoje
